@@ -10,6 +10,22 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a', 'Add image'
   end
 
+  def test_index_path_with_image_ordered
+    Image.create(url: VALID_URL)
+    Image.create(url: VALID_URL)
+    get images_path
+    assert_select 'label:first-child' do |label|
+      assert_includes label.text(), Image.last.id.to_s
+    end
+  end
+
+  def test_index_path_images_has_small_display_size
+    Image.create(url: VALID_URL)
+    Image.create(url: VALID_URL)
+    get images_path
+    assert_select '.image-small'
+  end
+
   def test_new_image_path
     get new_image_path
     assert_response :ok
@@ -38,5 +54,4 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, VALID_URL
     assert_equal Image.last.url, VALID_URL
   end
-
 end
