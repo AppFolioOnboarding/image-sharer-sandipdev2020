@@ -55,7 +55,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal Image.last.url, VALID_URL
   end
 
-  def test_show_when_iaage_id_not_found
+  def test_show_when_image_id_not_found
     get image_path('does not exist')
     assert_response :ok
     assert_includes response.body, 'requested image is not found'
