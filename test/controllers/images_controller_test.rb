@@ -48,6 +48,8 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     assert_redirected_to image_path(Image.last)
     assert_includes Image.last.url, VALID_URL
+    follow_redirect!
+    assert_select '.alert', 'image created successfully'
   end
 
   def test_create_new_image_with_invalid_url
@@ -79,7 +81,27 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to image_path(Image.last)
     assert_includes Image.last.url, VALID_URL
     follow_redirect!
-    assert_select 'a[href=?]',  image_path(VALID_FLOWER_TAG)
+    assert_select 'a[href=?]',  root_path(tags: VALID_FLOWER_TAG)
+  end
+
+  def test_index_with_unique_tags
+    assert_difference('Image.count', 2) do
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_FLOWER_TAG } }
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_PLANT_TAG } }
+    end
+    get root_path(tags: VALID_PLANT_TAG)
+    assert_select 'a[href=?]',  root_path(tags: VALID_PLANT_TAG)
+    assert_not_includes response.body, VALID_FLOWER_TAG
+  end
+
+  def test_index_with_empty_tags
+    assert_difference('Image.count', 2) do
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_FLOWER_TAG } }
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_PLANT_TAG } }
+    end
+    get root_path(tags: EMPTY_TAG)
+    assert_select 'a[href=?]',  root_path(tags: VALID_PLANT_TAG)
+    assert_select 'a[href=?]',  root_path(tags: VALID_FLOWER_TAG)
   end
 
   def test_index_with_unique_tags

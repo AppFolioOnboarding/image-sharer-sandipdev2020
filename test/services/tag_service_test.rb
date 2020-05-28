@@ -22,12 +22,6 @@ class TagServiceTest < ActiveSupport::TestCase
     assert_equal 2, images.length()
   end
 
-  def test_list_image_with_multiple_tags
-    Image.create!(url: VALID_URL, tag_list: MULTIPLE_TAGS)
-    images = TagService.list_image(tags: MULTIPLE_TAGS)
-    assert_equal Image.last, images[0]
-  end
-
   def test_list_image_with_order
     Image.create!(url: VALID_URL, tag_list: VALID_FLOWER_TAG)
     Image.create!(url: VALID_URL, tag_list: VALID_PLANT_TAG)
