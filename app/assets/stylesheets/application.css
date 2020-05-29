@@ -17,6 +17,20 @@
   max-width: 400px;
 }
 
-.parent-div {
-
+.centered {
+  height: 400px;
+  width: 400px;
+  position: absolute;
+  top:-400px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
+
+.table {
+  max-height: 400px;
+  max-width: 600px;
+  border: 0px;
+}
+

@@ -1,6 +1,8 @@
 <div class="centered">
-  <h4>Welcome to image upload app</h4>
+  <h4>List of images with "<%= @tag %>" tag</h4>
   <%= link_to 'Add new image', new_image_path %>
+  <br>
+  <%= link_to 'Back', images_path %>
   <table class="table">
     <tr>
       <th>Image ID</th>
@@ -18,7 +20,7 @@
           <%= image_tag(image.url, :class => "image-small") %>
           <p>
             <% image.tag_list.each do |tag| %>
-              <%= link_to tag, tagged_path(tag: tag) %>
+              <%=  link_to tag, tagged_path(tag: tag)%>
             <% end %>
           </p>
         </td>
