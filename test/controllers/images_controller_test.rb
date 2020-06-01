@@ -1,13 +1,13 @@
 require 'test_helper'
 
 VALID_URL ||= 'https://www.gstatic.com/webp/gallery3/1.png'.freeze
-
+VALID_TAG ||= 'flower'.freeze
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   def test_index_path
     get images_path
     assert_response :ok
-    assert_select 'a', 'Add image'
+    assert_select 'a', 'Add new image'
   end
 
   def test_index_path_with_image_ordered
@@ -16,6 +16,14 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get images_path
     assert_select 'label:first-child' do |label|
       assert_includes label.text(), Image.last.id.to_s
+    end
+  end
+
+  def test_index_path_tags
+    Image.create(url: VALID_URL, tag_list: VALID_TAG)
+    get images_path
+    assert_select '.tag-list' do |tag|
+      assert_equal [VALID_TAG], tag.map(&:text)
     end
   end
 
@@ -59,5 +67,16 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get image_path('does not exist')
     assert_response :ok
     assert_includes response.body, 'requested image is not found'
+  end
+
+  def test_create_new_image_with_tags
+    assert_difference('Image.count') do
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_TAG } }
+    end
+    assert_response :redirect
+    assert_redirected_to image_path(Image.last)
+    assert_includes Image.last.url, VALID_URL
+    follow_redirect!
+    assert_select 'p',  VALID_TAG
   end
 end
