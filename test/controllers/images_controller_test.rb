@@ -49,12 +49,18 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
-  def test_view_image
+  def test_show
     Image.create!(url: VALID_URL)
     get image_path(Image.last)
     assert_response :ok
     assert_includes response.body, VALID_URL
     assert_equal Image.last.url, VALID_URL
+  end
+
+  def test_show_when_image_id_not_found
+    get image_path('does not exist')
+    assert_response :ok
+    assert_includes response.body, 'requested image is not found'
   end
 
   def test_create_new_image_with_tags
