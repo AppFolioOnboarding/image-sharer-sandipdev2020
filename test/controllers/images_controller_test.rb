@@ -1,9 +1,7 @@
 require 'test_helper'
 
 VALID_URL ||= 'https://www.gstatic.com/webp/gallery3/1.png'.freeze
-VALID_FLOWER_TAG ||= 'flower'.freeze
-VALID_PLANT_TAG ||= 'plant'.freeze
-EMPTY_TAG ||= ''.freeze
+
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   def test_index_path
