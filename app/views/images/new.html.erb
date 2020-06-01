@@ -1,8 +1,25 @@
-<h3> Add new image</h3>
-
-<%= simple_form_for  @image do |f| %>
-  <%= f.input :url%>
-  <%= f.button :submit %>
-<% end %>
-
-<%= link_to 'Back', images_path %>
+<div class="centered">
+  <h3> Add new image</h3>
+  <table class="table">
+    <%= simple_form_for @image do |f| %>
+      <tr>
+        <td>
+          <%= f.input :url, required: false, placeholder: 'Add image url', label: 'Image url:  ' %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= f.label :name, 'Image tags: ' %>
+          <%= f.text_field :tag_list, value: f.object.tag_list.to_s, placeholder: 'Add tags' %>
+        </td>
+      </tr>
+      <tr>
+        <td><%= f.button :submit %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td>  <%= link_to 'Back', images_path %>
+      </td>
+    </tr>
+  </table>
+</div>
