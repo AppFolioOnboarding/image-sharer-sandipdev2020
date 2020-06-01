@@ -1,11 +1,27 @@
-<h3>Welcome to image app</h3>
-<div class="parent-div">
-<% @images.each do |image| %>
-  <label>
-    <%= image.id %>
-  </label>
-    <img src="<%= image.url %>" class="image-small">
-  <br>
-<% end %>
+<div class="centered">
+  <h4>Welcome to image upload app</h4>
+  <%= link_to 'Add new image', new_image_path %>
+  <table class="table">
+    <tr>
+      <th>Image ID</th>
+      <th>Image</th>
+    </tr>
+    <% @images.each do |image| %>
+      <tr>
+        <td>
+          <label>
+            <%= image.id %>
+          </label>
+        </td>
+        <td>
+          <%= image_tag(image.url, class: 'image-small') %>
+          <p>
+            <% image.tag_list.each do |tag| %>
+            <p><%= tag %></p>
+            <% end %>
+          </p>
+        </td>
+      </tr>
+    <% end %>
+  </table>
 </div>
-<%= link_to 'Add image', new_image_path %>
