@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
 
   def index
-    @images = Image.all.order('created_at DESC')
+    @images = Image.tagged_with(params[:tag]).order('created_at DESC')
   end
 
   def new
@@ -19,6 +19,7 @@ class ImagesController < ApplicationController
 
   def show
     @image = Image.find(params[:id])
+
   rescue ActiveRecord::RecordNotFound => e
     render 'notfound'
   end
@@ -42,4 +43,5 @@ class ImagesController < ApplicationController
   def image_params
     params.require(:image).permit(:url, :tag_list)
   end
+
 end

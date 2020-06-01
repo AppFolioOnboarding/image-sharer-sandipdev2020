@@ -5,7 +5,7 @@
       <td>
         <strong>Image: <%= @image.id %></strong>
         <br>
-        <%= image_tag(@image.url, :class => 'image-small') %>
+        <%= image_tag(@image.url, class: 'image-small') %>
         <br>
         <% if @image.tag_list.any? %>
           <p>Tags</p>

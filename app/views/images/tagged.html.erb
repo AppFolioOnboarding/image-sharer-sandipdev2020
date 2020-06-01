@@ -3,7 +3,7 @@
   <%= link_to 'Add new image', new_image_path %>
   <br>
   <%= link_to 'Back', images_path %>
-  <table class="table">
+  <table class='table'>
     <tr>
       <th>Image ID</th>
       <th>Image</th>
@@ -17,7 +17,7 @@
           </label>
         </td>
         <td>
-          <%= image_tag(image.url, :class => "image-small") %>
+          <%= image_tag(image.url, class: 'image-small') %>
           <p>
             <% image.tag_list.each do |tag| %>
               <%=  link_to tag, tagged_path(tag: tag)%>

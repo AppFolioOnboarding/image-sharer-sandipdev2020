@@ -19,7 +19,7 @@ gem 'jquery-rails'
 
 gem 'webpacker', '~> 4'
 
-# Simple form
+#simple form
 gem 'simple_form'
 
 # For tagging purposes
