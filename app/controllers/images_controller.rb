@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
 
   def index
-
+    @images = Image.all.order('created_at DESC')
   end
 
   def new
@@ -19,6 +19,8 @@ class ImagesController < ApplicationController
 
   def show
     @image = Image.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    render 'notfound'
   end
 
   private

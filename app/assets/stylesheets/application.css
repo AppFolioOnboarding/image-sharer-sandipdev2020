@@ -13,3 +13,10 @@
  *= require_tree .
  *= require_self
  */
+.image-small {
+  max-width: 400px;
+}
+
+.parent-div {
+
+}

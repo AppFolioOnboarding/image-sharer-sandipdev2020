@@ -10,6 +10,22 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a', 'Add image'
   end
 
+  def test_index_path_with_image_ordered
+    Image.create(url: VALID_URL)
+    Image.create(url: VALID_URL)
+    get images_path
+    assert_select 'label:first-child' do |label|
+      assert_includes label.text(), Image.last.id.to_s
+    end
+  end
+
+  def test_index_path_images_has_small_display_size
+    Image.create(url: VALID_URL)
+    Image.create(url: VALID_URL)
+    get images_path
+    assert_select '.image-small'
+  end
+
   def test_new_image_path
     get new_image_path
     assert_response :ok
@@ -31,7 +47,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
-  def test_view_image
+  def test_show
     Image.create!(url: VALID_URL)
     get image_path(Image.last)
     assert_response :ok
@@ -39,4 +55,9 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal Image.last.url, VALID_URL
   end
 
+  def test_show_when_iaage_id_not_found
+    get image_path('does not exist')
+    assert_response :ok
+    assert_includes response.body, 'requested image is not found'
+  end
 end
