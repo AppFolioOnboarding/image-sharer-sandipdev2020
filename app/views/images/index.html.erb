@@ -5,6 +5,7 @@
     <tr>
       <th>Image ID</th>
       <th>Image</th>
+      <th></th>
     </tr>
     <% @images.each do |image| %>
       <tr>
@@ -20,6 +21,9 @@
               <%= link_to tag, root_path(tag: tag), class: 'tag-list' %>
             <% end %>
           </p>
+        </td>
+        <td>
+          <%= button_to 'Delete', image, method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>
