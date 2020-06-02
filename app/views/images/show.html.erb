@@ -1,8 +1,25 @@
-<p>
-  <strong>Image: <%= @image.id %></strong>
-  <br>
-  <img src=<%= @image.url %>>
-  <br>
-</p>
-
-<%= link_to 'Back', images_path %>
+<div class="centered">
+  <h3> Imgage uploaded successfully</h3>
+  <table class="table">
+    <tr>
+      <td>
+        <strong>Image: <%= @image.id %></strong>
+        <br>
+        <%= image_tag(@image.url, class: 'image-small') %>
+        <br>
+        <% if @image.tag_list.any? %>
+          <p>Tags</p>
+          <% @image.tag_list.each do |tag| %>
+            <p><%= tag %></p>
+            <br>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= link_to 'Back', images_path %>
+      </td>
+    </tr>
+  </table>
+</div>
