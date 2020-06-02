@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
 
   def index
-    @images = Image.all.order('created_at DESC')
+    @images = TagService.list_image tag_params
   end
 
   def new
@@ -28,5 +28,9 @@ class ImagesController < ApplicationController
   #strong params
   def image_params
     params.require(:image).permit(:url, :tag_list)
+  end
+
+  def tag_params
+    params.permit(:tags)
   end
 end

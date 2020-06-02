@@ -1,7 +1,9 @@
 require 'test_helper'
 
 VALID_URL ||= 'https://www.gstatic.com/webp/gallery3/1.png'.freeze
-VALID_TAG ||= 'flower'.freeze
+VALID_FLOWER_TAG ||= 'flower'.freeze
+VALID_PLANT_TAG ||= 'plant'.freeze
+EMPTY_TAG ||= ''.freeze
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   def test_index_path
@@ -63,7 +65,7 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal Image.last.url, VALID_URL
   end
 
-  def test_show_when_iaage_id_not_found
+  def test_show_when_image_id_not_found
     get image_path('does not exist')
     assert_response :ok
     assert_includes response.body, 'requested image is not found'
@@ -71,12 +73,32 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
 
   def test_create_new_image_with_tags
     assert_difference('Image.count') do
-      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_TAG } }
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_FLOWER_TAG } }
     end
     assert_response :redirect
     assert_redirected_to image_path(Image.last)
     assert_includes Image.last.url, VALID_URL
     follow_redirect!
-    assert_select 'p',  VALID_TAG
+    assert_select 'a[href=?]',  image_path(VALID_FLOWER_TAG)
+  end
+
+  def test_index_with_unique_tags
+    assert_difference('Image.count', 2) do
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_FLOWER_TAG } }
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_PLANT_TAG } }
+    end
+    get root_path(tag: VALID_PLANT_TAG)
+    assert_select 'a[href=?]',  root_path(tag: VALID_PLANT_TAG)
+    assert_not_includes response.body, VALID_FLOWER_TAG
+  end
+
+  def test_index_with_empty_tags
+    assert_difference('Image.count', 2) do
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_FLOWER_TAG } }
+      post '/images', params: { image: { url: VALID_URL, tag_list: VALID_PLANT_TAG } }
+    end
+    get root_path(tag: EMPTY_TAG)
+    assert_select 'a[href=?]',  root_path(tag: VALID_PLANT_TAG)
+    assert_select 'a[href=?]',  root_path(tag: VALID_FLOWER_TAG)
   end
 end
