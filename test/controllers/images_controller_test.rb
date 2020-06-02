@@ -1,7 +1,9 @@
 require 'test_helper'
 
 VALID_URL ||= 'https://www.gstatic.com/webp/gallery3/1.png'.freeze
-
+VALID_FLOWER_TAG ||= 'flower'.freeze
+VALID_PLANT_TAG ||= 'plant'.freeze
+EMPTY_TAG ||= ''.freeze
 
 class ImagesControllerTest < ActionDispatch::IntegrationTest
   def test_index_path
@@ -20,10 +22,10 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_index_path_tags
-    Image.create(url: VALID_URL, tag_list: VALID_TAG)
+    Image.create(url: VALID_URL, tag_list: VALID_FLOWER_TAG)
     get images_path
     assert_select '.tag-list' do |tag|
-      assert_equal [VALID_TAG], tag.map(&:text)
+      assert_equal [VALID_FLOWER_TAG], tag.map(&:text)
     end
   end
 
@@ -120,5 +122,28 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
     get root_path(tags: EMPTY_TAG)
     assert_select 'a[href=?]',  root_path(tags: VALID_PLANT_TAG)
     assert_select 'a[href=?]',  root_path(tags: VALID_FLOWER_TAG)
+  end
+
+  def test_image_destroy
+    Image.create!(url: VALID_URL, tag_list: VALID_FLOWER_TAG)
+    assert_difference('Image.count', -1) do
+      delete image_path(Image.last.id)
+    end
+    assert_redirected_to images_path
+    follow_redirect!
+    assert_select '.alert', 'image deleted successfully'
+  end
+
+  def test_image_destroy_raises_exception_for_already_deleted_image
+    Image.create!(url: VALID_URL, tag_list: VALID_FLOWER_TAG)
+    id = Image.last.id
+    assert_difference('Image.count', -1) do
+      delete image_path(Image.last.id)
+    end
+    assert_no_difference('Image.count') do
+      assert_raises(Exception) {
+        delete image_path(Image.last.id)
+      }
+    end
   end
 end
