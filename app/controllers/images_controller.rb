@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
 
   def index
-    @images = TagService.list_image tag_params
+    @images = Image.all.order('created_at DESC')
   end
 
   def new
