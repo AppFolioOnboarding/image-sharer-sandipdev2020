@@ -87,8 +87,8 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       post '/images', params: { image: { url: VALID_URL, tag_list: VALID_FLOWER_TAG } }
       post '/images', params: { image: { url: VALID_URL, tag_list: VALID_PLANT_TAG } }
     end
-    get root_path(tag: VALID_PLANT_TAG)
-    assert_select 'a[href=?]',  root_path(tag: VALID_PLANT_TAG)
+    get root_path(tags: VALID_PLANT_TAG)
+    assert_select 'a[href=?]',  root_path(tags: VALID_PLANT_TAG)
     assert_not_includes response.body, VALID_FLOWER_TAG
   end
 
@@ -97,8 +97,8 @@ class ImagesControllerTest < ActionDispatch::IntegrationTest
       post '/images', params: { image: { url: VALID_URL, tag_list: VALID_FLOWER_TAG } }
       post '/images', params: { image: { url: VALID_URL, tag_list: VALID_PLANT_TAG } }
     end
-    get root_path(tag: EMPTY_TAG)
-    assert_select 'a[href=?]',  root_path(tag: VALID_PLANT_TAG)
-    assert_select 'a[href=?]',  root_path(tag: VALID_FLOWER_TAG)
+    get root_path(tags: EMPTY_TAG)
+    assert_select 'a[href=?]',  root_path(tags: VALID_PLANT_TAG)
+    assert_select 'a[href=?]',  root_path(tags: VALID_FLOWER_TAG)
   end
 end
