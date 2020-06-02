@@ -22,6 +22,9 @@ gem 'webpacker', '~> 4'
 #simple form
 gem 'simple_form'
 
+# For tagging purposes
+gem 'acts-as-taggable-on', '~> 6.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
