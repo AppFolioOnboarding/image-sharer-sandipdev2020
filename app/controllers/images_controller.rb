@@ -1,7 +1,9 @@
 class ImagesController < ApplicationController
 
+  add_flash_types :success, :error
+
   def index
-    @images = TagService.list_image tag_params
+    @images = Image.all.order('created_at DESC')
   end
 
   def new
@@ -12,6 +14,7 @@ class ImagesController < ApplicationController
     @image = Image.new(image_params)
     if @image.save
       redirect_to @image
+      flash[:success] = "image created successfully"
     else
       render 'new'
     end
@@ -19,6 +22,14 @@ class ImagesController < ApplicationController
 
   def show
     @image = Image.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    render 'notfound'
+  end
+
+  def destroy
+    TagService.delete delete_params
+    redirect_to images_path
+    flash[:error] = "image deleted successfully"
   rescue ActiveRecord::RecordNotFound => e
     render 'notfound'
   end
@@ -32,5 +43,9 @@ class ImagesController < ApplicationController
 
   def tag_params
     params.permit(:tags)
+  end
+
+  def delete_params
+    params.permit(:id)[:id]
   end
 end

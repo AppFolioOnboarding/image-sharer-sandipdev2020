@@ -28,6 +28,6 @@ class ImagesControllerTest < ActiveSupport::TestCase
 
   def test_image_with_empty_tag
     @image = Image.new(url: VALID_URL)
-    assert_predicate @image.tag_list  , :empty?
+    assert_predicate @image.tag_list, :empty?
   end
 end

@@ -5,6 +5,7 @@
     <tr>
       <th>Image ID</th>
       <th>Image</th>
+      <th></th>
     </tr>
     <% @images.each do |image| %>
       <tr>
@@ -21,7 +22,11 @@
             <% end %>
           </p>
         </td>
+        <td>
+          <%= button_to 'Delete', image, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
       </tr>
     <% end %>
   </table>
 </div>
+<%= link_to 'Add image', new_image_path %>
