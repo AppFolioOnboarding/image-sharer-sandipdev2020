@@ -1,7 +1,5 @@
 module Api
   class FeedbacksController < ApplicationController
-    def create
-     # Implement your create action
-    end
+    def create; end
   end
 end
