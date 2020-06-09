@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 
 describe('Footer', () => {
   it('should display footer', () => {
