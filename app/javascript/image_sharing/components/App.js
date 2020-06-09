@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Footer from './Footer';
 import FeedbackForm from './FeedbackForm';
 import Header from './Header';
 
 class App extends Component {
-  /* Add Prop Types check*/
+  static propTypes = {
+    store: PropTypes.object.isRequired
+  };
   render() {
     return (
       <div>
         <Header title="Tell us what you think" />
-        <FeedbackForm />
+        <FeedbackForm store={this.props.store} />
         <Footer />
       </div>
     );
