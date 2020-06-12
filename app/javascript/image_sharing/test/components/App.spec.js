@@ -10,10 +10,14 @@ describe('<App />', () => {
     const stores = {
       feedbackStore: {
         name: 'test',
-        comments: 'test'
+        comments: 'test',
+        response: {
+          status: 'test',
+          message: 'test'
+        }
       }
     };
-    const wrapper = mount(<App store={stores} />);
+    const wrapper = mount(<App stores={stores} />);
     assert(wrapper.contains('Tell us what you think'));
   });
 });
