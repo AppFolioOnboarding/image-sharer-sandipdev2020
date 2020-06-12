@@ -1,25 +1,26 @@
-import React from 'react';
+import { observer } from 'mobx-react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import PostFeedbackService from '../services/PostFeedbackService';
 
-export default class FeedbackForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { name: '', comment: '' };
-    this.handleChangeName = this.handleChangeName.bind(this);
-    this.handleChangeComment = this.handleChangeComment.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+@observer
+export default class FeedbackForm extends Component {
+  static propTypes = {
+    store: PropTypes.object.isRequired
+  };
+
+  handleChangeName = (event) => {
+    this.props.store.setName(event.target.value);
   }
 
-  handleChangeName(event) {
-    this.setState({ name: event.target.value });
+  handleChangeComments = (event) => {
+    this.props.store.setComments(event.target.value);
   }
 
-  handleChangeComment(event) {
-    this.setState({ comment: event.target.value });
-  }
-
-  handleSubmit(event) {
-    alert(`A name was submitted: ${this.state.name}`);
+  handleSubmit = (event) => {
     event.preventDefault();
+    const service = new PostFeedbackService(this.props.store);
+    return service.postFeedback();
   }
 
   render() {
@@ -30,7 +31,13 @@ export default class FeedbackForm extends React.Component {
             <label htmlFor="name">
               Your name:
               <br />
-              <input id="name" type="text" value={this.state.name} onChange={this.handleChangeName} className="form-control" />
+              <input
+                id="name"
+                type="text"
+                value={this.props.store.name}
+                onChange={this.handleChangeName}
+                className="form-control"
+              />
             </label>
           </div>
           <div style={{ padding: '10px' }}>
@@ -40,13 +47,19 @@ export default class FeedbackForm extends React.Component {
               <textarea
                 id="comments"
                 type="text"
-                value={this.state.comment}
-                onChange={this.handleChangeComment}
+                value={this.props.store.comments}
+                onChange={this.handleChangeComments}
                 className="form-control"
               />
             </label>
           </div>
-          <div style={{ padding: '10px' }}><input type="submit" value="Submit" className="btn btn-primary" /></div>
+          <div style={{ padding: '10px' }}>
+            <input
+              type="submit"
+              value="Submit"
+              className="btn btn-primary"
+            />
+          </div>
         </form>
       </div>
     );
