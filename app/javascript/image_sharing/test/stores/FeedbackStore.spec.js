@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 import { expect } from 'chai';
-import { FeedbackStore } from '../../stores/FeedbackStore';
+import FeedbackStore from '../../stores/FeedbackStore';
 
 describe('FeedbackStore', () => {
   it('defaults to an empty name', () => {
