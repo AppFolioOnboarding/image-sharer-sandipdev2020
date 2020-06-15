@@ -1,22 +1,26 @@
+import { observer } from 'mobx-react';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import PostFeedbackService from '../services/PostFeedbackService';
 
+@observer
 export default class FeedbackForm extends Component {
   static propTypes = {
     store: PropTypes.object.isRequired
   };
 
-  handleChangeName(event) {
+  handleChangeName = (event) => {
     this.props.store.setName(event.target.value);
   }
 
-  handleChangeComment(event) {
+  handleChangeComments = (event) => {
     this.props.store.setComments(event.target.value);
   }
 
-  handleSubmit(event) {
-    alert(`A name was submitted: ${this.props.store.name}`);
+  handleSubmit = (event) => {
     event.preventDefault();
+    const service = new PostFeedbackService(this.props.store);
+    return service.postFeedback();
   }
 
   render() {
@@ -44,7 +48,7 @@ export default class FeedbackForm extends Component {
                 id="comments"
                 type="text"
                 value={this.props.store.comments}
-                onChange={this.handleChangeComment}
+                onChange={this.handleChangeComments}
                 className="form-control"
               />
             </label>
